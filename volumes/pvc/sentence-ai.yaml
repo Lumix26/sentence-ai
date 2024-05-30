@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sentence-ai-pvc
+  namespace: sentence-ai
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: default
+  selector:
+    matchLabels:
+      app: sentence-ai-pv

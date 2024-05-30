@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: webui-dpl
+ namespace: sentence-ai
+ labels:
+   app: webui-dpl
+spec:
+ replicas: 1
+ selector:
+   matchLabels:
+     app: webui-dpl
+ template:
+   metadata:
+     labels:
+       app: webui-dpl
+   spec:
+     containers:
+     - name: webui-container
+       image: ghcr.io/open-webui/open-webui:main
+       ports:
+       - containerPort: 8080
+       env: 
+        - name: OLLAMA_BASE_URL
+          value: http://ollama-svc.sentence-ai.svc.cluster.local:11434
+       volumeMounts:
+       - mountPath: /app/backend/data
+         name: webui
+         subPath: webui
+     volumes:
+      - name: webui
+        persistentVolumeClaim:
+          claimName: sentence-ai-pvc
